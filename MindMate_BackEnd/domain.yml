@@ -1,0 +1,116 @@
+version: "3.1"
+
+intents:
+  - greet
+  - affirm
+  - deny
+  - mood_response
+  - dass_response
+  - ask_general_question
+  - request_dass
+
+entities: []
+
+slots:
+  mood:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: from_text
+        intent: mood_response
+  wants_dass:
+    type: bool
+    influence_conversation: true
+    mappings:
+      - type: from_intent
+        intent: affirm
+        value: true
+      - type: from_intent
+        intent: deny
+        value: false
+      - type: from_intent
+        intent: request_dass
+        value: true
+  current_question:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: custom
+  question_index:
+    type: float
+    initial_value: 0.0
+    influence_conversation: false
+    mappings:
+      - type: custom
+  depression_score:
+    type: float
+    initial_value: 0.0
+    influence_conversation: false
+    mappings:
+      - type: custom
+  anxiety_score:
+    type: float
+    initial_value: 0.0
+    influence_conversation: false
+    mappings:
+      - type: custom
+  stress_score:
+    type: float
+    initial_value: 0.0
+    influence_conversation: false
+    mappings:
+      - type: custom
+  temp_depression_score:
+    type: float
+    initial_value: null
+    influence_conversation: false
+    mappings:
+      - type: custom
+  temp_anxiety_score:
+    type: float
+    initial_value: null
+    influence_conversation: false
+    mappings:
+      - type: custom
+  temp_stress_score:
+    type: float
+    initial_value: null
+    influence_conversation: false
+    mappings:
+      - type: custom
+  rag_context:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: custom
+
+responses:
+  utter_greet:
+    - text: "Hey there! How about today? Feeling okay?"
+  utter_ask_dass:
+    - text: "Would you like to check your mental health with a quick questionnaire?"
+  utter_deny_dass:
+    - text: "No worries! I'm here if you change your mind. Anything else on your mind?"
+  utter_start_dass:
+    - text: "Great! I'll ask you 21 questions to measure your Depression, Anxiety, and Stress levels. For each question, please respond with a number from 0 to 3: 0 (Did not apply to me at all), 1 (Applied to some degree), 2 (Applied to a considerable degree), 3 (Applied to me very much). Ready? Here's the first question:"
+  utter_ask_question:
+    - text: "{question}"
+  utter_show_results:
+    - text: "Here are your results:\nDepression: {depression_score} ({depression_level})\nAnxiety: {anxiety_score} ({anxiety_level})\nStress: {stress_score} ({stress_level})\nWould you like some tips to manage these?"
+  utter_invalid_response:
+    - text: "Please respond with a number between 0 and 3."
+  utter_offer_more_help:
+    - text: "Would you like more relaxation tips or professional resources?"
+  utter_general_answer:
+    - text: "{answer}"
+
+actions:
+  - action_ask_dass_question
+  - action_process_dass_response
+  - action_show_dass_results
+  - action_retrieve_and_generate_tips
+  - action_answer_general_question
+
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true

@@ -1,0 +1,60 @@
+version: "3.1"
+nlu:
+  - intent: greet
+    examples: |
+      - hi
+      - hello
+      - hey
+  - intent: mood_response
+    examples: |
+      - I'm okay
+      - Feeling a bit down
+      - Not great
+      - Pretty good
+  - intent: affirm
+    examples: |
+      - yes
+      - sure
+      - okay
+      - I'd like to
+  - intent: deny
+    examples: |
+      - no
+      - not really
+      - maybe later
+  - intent: dass_response
+    examples: |
+      - 0
+      - 1
+      - 2
+      - 3
+  - intent: ask_general_question
+    examples: |
+      - What are some relaxation tips?
+      - How can I manage stress as a remote worker?
+      - What is depression?
+      - Can you suggest ways to stay calm?
+      - How do I improve my mental health?
+      - Tell me about anxiety symptoms
+      - What should I do if I feel overwhelmed?
+      - Are there breathing exercises for stress?
+      - How does therapy help with depression?
+      - What are some self-care tips?
+      - What is the weather like?
+      - Tell me about machine learning
+      - How does a computer work?
+      - What is the capital of France?
+      - Can you explain quantum physics?
+      - What is Sri Lanka?
+      - What is artificial intelligence?
+      - How does the internet work?
+      - What is the history of computers?
+      - Tell me about global warming
+  - intent: request_dass
+    examples: |
+      - I want to check my mental condition
+      - Can you assess my mental health?
+      - I’d like to take a mental health test
+      - Please check my mental state
+      - I want to evaluate my mental well-being
+      - Can I do a mental health questionnaire?

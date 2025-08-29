@@ -1,0 +1,25 @@
+version: "3.1"
+rules:
+  - rule: Greet and ask for DASS-21
+    steps:
+      - intent: greet
+      - action: utter_greet
+
+  - rule: Start DASS-21 on affirm
+    steps:
+      - intent: affirm
+      - action: utter_start_dass
+      - action: action_ask_dass_question
+  - rule: Deny DASS-21
+    steps:
+      - intent: deny
+      - action: utter_deny_dass
+  - rule: Handle general question
+    steps:
+      - intent: ask_general_question
+      - action: action_answer_general_question
+  - rule: Start DASS-21 on request
+    steps:
+      - intent: request_dass
+      - action: utter_start_dass
+      - action: action_ask_dass_question
