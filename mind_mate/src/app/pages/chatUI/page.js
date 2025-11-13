@@ -170,9 +170,9 @@ export default function ChatPage() {
 
           {/* Button */}
           <div className="mt-6 w-full">
-            <button className="w-full bg-gray-100 hover:bg-gray-200 rounded-lg py-2 font-medium">
+            {/* <button className="w-full bg-gray-100 hover:bg-gray-200 rounded-lg py-2 font-medium">
               Find a Therapist
-            </button>
+            </button> */}
           </div>
         </aside>
       </main>

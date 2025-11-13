@@ -2,59 +2,248 @@ version: "3.1"
 nlu:
   - intent: greet
     examples: |
-      - hi
-      - hello
-      - hey
+      - hi there, how are you?
+      - hello, nice to meet you!
+      - hey everyone, what’s new?
+      - good morning, hope you’re well!
+      - good afternoon, great to chat!
+      - good evening, how’s your day?
+      - hola amigos, qué tal?
+      - namaste, peace to you!
+      - howdy partner, good to see you!
+      - what’s up folks, long time!
+      - yo crew, what’s happening?
+      - greetings to all, hello there!
+      - hey there buddy!
+      - hi chatbot, how’s it going?
+      - hey friend, what’s up?
+      - hello again, it’s me!
+      - hi, how are you doing today?
+      - morning sunshine!
+      - good to see you today!
+      - hey there, good to catch up!
+      - hi bot, ready to chat?
+      - yo, long time no see!
+      - hi mate, how’s life treating you?
+      - hiya, all good?
+      - hey, how’s your morning going?
+      - hi there, glad to be here!
+      - what’s good today?
+      - hey hey, how have you been?
+      - greetings my friend
+      - hey, any news?
+      - good day to you!
+      - hi there again!
+      - yo, you around?
+      - hi chatbot, can we talk?
+      - hello and good morning!
+      - hi, how are you feeling today?
+      - hey, happy to chat again!
+
   - intent: mood_response
     examples: |
-      - I'm okay
-      - Feeling a bit down
-      - Not great
-      - Pretty good
+      - I’m feeling okay today, thanks
+      - I’ve been a bit down lately
+      - I’m not so great right now
+      - I’m feeling pretty good today
+      - I’m doing fine, appreciate it
+      - I’m under stress these days
+      - I’m slightly anxious at the moment
+      - I’ve been really sad lately
+      - I’m happy with how my day’s going
+      - I’m just so-so this evening
+      - I’m not well, feeling off
+      - I’m absolutely great right now!
+      - I’m feeling terrible, honestly
+      - I’m totally exhausted today
+      - I’m completely overwhelmed lately
+      - I feel calm and content today
+      - I’m feeling hopeful lately
+      - I’m in a cheerful mood now
+      - I’m not myself today
+      - I’m trying to stay positive
+      - I’ve been struggling emotionally
+      - I’m really stressed with work
+      - I feel peaceful and relaxed
+      - I’m feeling blue today
+      - I’m mentally drained today
+      - I feel motivated this morning
+      - I’m emotionally tired right now
+      - I’m doing better than before
+      - I feel a bit empty today
+      - I’m having a rough week
+      - I’m feeling lighthearted and happy
+      - I’ve been quite tense recently
+      - I feel confused about everything
+      - I’m emotionally okay today
+      - I’ve been more balanced lately
+      - I’m in a neutral mood right now
+      - I’m feeling full of energy
+
   - intent: affirm
     examples: |
-      - yes
-      - sure
-      - okay
-      - I'd like to
+      - yes, I fully agree with that
+      - sure, I’m completely on board
+      - okay, I’m ready to move forward
+      - I’d love to go ahead with it
+      - yes please, I’m all for it
+      - definitely, I support this
+      - sounds good, I’m in favor
+      - absolutely, I’m committed
+      - go right ahead, I approve
+      - I’m set to start, let’s do it
+      - let’s begin, I’m on board
+      - perfect, I’m all in for this
+      - yes, let’s continue
+      - for sure, I agree
+      - exactly, that’s right
+      - that’s correct
+      - indeed, I do
+      - okay sure
+      - right, I’m fine with it
+      - yes, continue please
+      - agreed completely
+      - I’m okay with that
+      - that works for me
+      - sounds perfect to me
+      - fine, let’s do it
+      - yes, that’s what I want
+      - totally agree with you
+      - I’m cool with that
+      - yup, let’s move on
+      - yes, go ahead please
+      - absolutely yes
+      - I agree 100%
+      - affirmative
+      - I think so too
+      - sure thing
+      - count me in
+
   - intent: deny
     examples: |
-      - no
-      - not really
-      - maybe later
+      - no, I’m not interested at all
+      - not really, I’d prefer to skip
+      - maybe later, I’m not ready now
+      - no, I’d rather avoid it
+      - no thanks, I’ll opt out
+      - I’d like to decline this time
+      - not at all interested, sorry
+      - please skip it for me
+      - let’s postpone it instead
+      - I’m fine without it, thanks
+      - no way, I’m not doing it
+      - not today, I’ll pass on this
+      - no, not now
+      - no thank you
+      - nope, not happening
+      - not really, I’ll pass
+      - not this time
+      - I don’t think so
+      - nah, not interested
+      - maybe some other time
+      - I’ll skip that
+      - no, not at the moment
+      - sorry, I’d rather not
+      - not a good time
+      - I’m going to pass
+      - negative
+      - I decline
+      - not for me
+      - I’d prefer not to
+      - I’ll avoid that
+      - sorry, no
+      - don’t want that
+      - not needed right now
+      - I’m not into that
+      - no, not really
+
   - intent: dass_response
     examples: |
       - 0
       - 1
       - 2
       - 3
+
   - intent: ask_general_question
     examples: |
-      - What are some relaxation tips?
-      - How can I manage stress as a remote worker?
-      - What is depression?
-      - Can you suggest ways to stay calm?
-      - How do I improve my mental health?
-      - Tell me about anxiety symptoms
-      - What should I do if I feel overwhelmed?
-      - Are there breathing exercises for stress?
-      - How does therapy help with depression?
-      - What are some self-care tips?
-      - What is the weather like?
-      - Tell me about machine learning
-      - How does a computer work?
-      - What is the capital of France?
-      - Can you explain quantum physics?
-      - What is Sri Lanka?
-      - What is artificial intelligence?
-      - How does the internet work?
-      - What is the history of computers?
-      - Tell me about global warming
+      - What can I do to relax more?
+      - How do I handle stress working remotely?
+      - Can you explain what depression is?
+      - Any ideas to stay calm daily?
+      - What steps improve mental health?
+      - What are signs of anxiety?
+      - How should I deal with feeling overwhelmed?
+      - Are there stress-relief breathing exercises?
+      - How does therapy treat depression?
+      - What self-care practices help?
+      - What’s the weather forecast today?
+      - How does a computer process data?
+      - What benefits come from meditation?
+      - How much water should I drink each day?
+      - How do I get better at communicating?
+      - How do I stay motivated at my job?
+      - What is 5G technology all about?
+      - How do I organize my living space?
+      - What defines artificial intelligence?
+      - What makes a balanced diet?
+      - How can I save money effectively?
+      - What’s the history of Sri Lanka?
+      - How can I manage negative thoughts?
+      - What is burnout and how to prevent it?
+      - What are the best stress coping methods?
+      - What is cognitive behavioral therapy?
+      - How do I deal with loneliness?
+      - What are love languages?
+      - How does WiFi connect devices?
+      - What are grounding techniques?
+      - What are some mindfulness methods?
+      - How can I sharpen my focus?
+      - How do I improve my sleep quality?
+      - How does cryptocurrency work?
+      - What are benefits of journaling?
+      - What is mindfulness meditation?
+      - How do I build confidence at work?
+      - How does GPS find my location?
+
   - intent: request_dass
     examples: |
-      - I want to check my mental condition
-      - Can you assess my mental health?
-      - I’d like to take a mental health test
-      - Please check my mental state
-      - I want to evaluate my mental well-being
-      - Can I do a mental health questionnaire?
+      - I need a mental health assessment now
+      - Can you measure my stress level?
+      - Please start the DASS test for me
+      - Evaluate my anxiety and depression
+      - I want to do the mental health check
+      - Assess my mood with DASS
+      - Test my stress and anxiety today
+      - Run a mental wellness evaluation
+      - Begin the mental health screening
+      - Conduct a stress and depression test
+      - Check if I have depression signs
+      - Screen me for stress levels
+      - Look for depression in my mood
+      - Assess if I’m anxious lately
+      - Test me for stress symptoms
+      - Evaluate if I’m overwhelmed
+      - Rate my burnout risk
+      - Measure my current stress
+      - Check for mental health problems
+      - What’s my mental health status?
+      - Give me my stress rating
+      - Score my emotional health
+      - Assess my psychological state
+      - Check my mental resilience
+      - Rate my anxiety level
+      - Measure my depression score
+      - Evaluate my stress capacity
+      - Test my mental balance
+      - Start the DASS-21 survey
+      - Guide me through DASS-21
+      - Begin the depression stress test
+      - Run the full mental health survey
+      - Launch the mental health screen
+      - Initiate the DASS assessment
+      - Begin the anxiety test
+      - Conduct the mental health survey
+      - Start the stress evaluation form
+      - I’m off—please test me
+      - I need a mental health review
+      - Diagnose my stress condition

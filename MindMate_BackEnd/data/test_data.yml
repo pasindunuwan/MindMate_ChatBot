@@ -1,0 +1,64 @@
+# data/nlu_test.yml - FINAL VERSION
+version: "3.1"
+nlu:
+  - intent: greet
+    examples: |
+      - hello there
+      - morning!
+      - evening greetings
+      - hey buddy
+      - sup
+      - hi everyone
+
+  - intent: mood_response
+    examples: |
+      - feeling low
+      - quite good
+      - stressed out
+      - very happy
+      - exhausted today
+      - not so well
+
+  - intent: affirm
+    examples: |
+      - yup
+      - of course
+      - yes indeed
+      - sounds perfect
+      - let's go
+      - affirmative
+
+  - intent: deny
+    examples: |
+      - nah
+      - nope
+      - not today
+      - I'll pass
+      - no way
+      - negative
+
+  - intent: dass_response # ✅ FIXED
+    examples: |
+      - 0
+      - 1
+      - 2
+      - 3
+      - 4
+
+  - intent: ask_general_question
+    examples: |
+      - What causes anxiety?
+      - How do I reduce stress?
+      - Tell me about meditation benefits
+      - What is burnout?
+      - How can I improve sleep?
+      - Why am I always tired?
+
+  - intent: request_dass
+    examples: |
+      - Can I take the DASS test now?
+      - Check my mental health please
+      - I want the stress assessment
+      - Start DASS-21 for me
+      - Test my anxiety level
+      - Run mental health check

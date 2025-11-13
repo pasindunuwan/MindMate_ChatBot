@@ -83,6 +83,12 @@ slots:
     influence_conversation: false
     mappings:
       - type: custom
+  music_recommendations:
+    type: text
+    initial_value: null
+    influence_conversation: false
+    mappings:
+      - type: custom
 
 responses:
   utter_greet:
@@ -96,11 +102,11 @@ responses:
   utter_ask_question:
     - text: "{question}"
   utter_show_results:
-    - text: "Here are your results:\nDepression: {depression_score} ({depression_level})\nAnxiety: {anxiety_score} ({anxiety_level})\nStress: {stress_score} ({stress_level})\nWould you like some tips to manage these?"
+    - text: "Here are your results:\nDepression: {depression_score} ({depression_level})\nAnxiety: {anxiety_score} ({anxiety_level})\nStress: {stress_score} ({stress_level})\nI'll provide some tailored tips and music recommendations next."
   utter_invalid_response:
     - text: "Please respond with a number between 0 and 3."
   utter_offer_more_help:
-    - text: "Would you like more relaxation tips or professional resources?"
+    - text: "Would you like more relaxation tips, music recommendations, or professional resources?"
   utter_general_answer:
     - text: "{answer}"
 

@@ -1,0 +1,154 @@
+[
+  {
+    "text": "I’m set to start, let’s do it",
+    "intent": "affirm",
+    "intent_prediction": {
+      "name": "mood_response",
+      "confidence": 0.5475270748138428
+    }
+  },
+  {
+    "text": "I’m fine without it, thanks",
+    "intent": "deny",
+    "intent_prediction": {
+      "name": "mood_response",
+      "confidence": 0.9997345805168152
+    }
+  },
+  {
+    "text": "I’m not into that",
+    "intent": "deny",
+    "intent_prediction": {
+      "name": "mood_response",
+      "confidence": 0.7000049948692322
+    }
+  },
+  {
+    "text": "What’s my mental health status?",
+    "intent": "request_dass",
+    "intent_prediction": {
+      "name": "ask_general_question",
+      "confidence": 0.8358967304229736
+    }
+  },
+  {
+    "text": "I’m off—please test me",
+    "intent": "request_dass",
+    "intent_prediction": {
+      "name": "mood_response",
+      "confidence": 0.9977339506149292
+    }
+  },
+  {
+    "text": "sup",
+    "intent": "greet",
+    "intent_prediction": {
+      "name": "deny",
+      "confidence": 0.7953265309333801
+    }
+  },
+  {
+    "text": "of course",
+    "intent": "affirm",
+    "intent_prediction": {
+      "name": "deny",
+      "confidence": 0.5745417475700378
+    }
+  },
+  {
+    "text": "affirmative",
+    "intent": "affirm",
+    "intent_prediction": {
+      "name": "deny",
+      "confidence": 0.6461945176124573
+    }
+  },
+  {
+    "text": "I think so too",
+    "intent": "affirm",
+    "intent_prediction": {
+      "name": "deny",
+      "confidence": 0.9988090991973877
+    }
+  },
+  {
+    "text": "not so well",
+    "intent": "mood_response",
+    "intent_prediction": {
+      "name": "deny",
+      "confidence": 0.9959571957588196
+    }
+  },
+  {
+    "text": "I’m doing fine, appreciate it",
+    "intent": "mood_response",
+    "intent_prediction": {
+      "name": "deny",
+      "confidence": 0.47029581665992737
+    }
+  },
+  {
+    "text": "What steps improve mental health?",
+    "intent": "ask_general_question",
+    "intent_prediction": {
+      "name": "request_dass",
+      "confidence": 0.965200662612915
+    }
+  },
+  {
+    "text": "that works for me",
+    "intent": "affirm",
+    "intent_prediction": {
+      "name": "deny",
+      "confidence": 0.9924771189689636
+    }
+  },
+  {
+    "text": "I’m cool with that",
+    "intent": "affirm",
+    "intent_prediction": {
+      "name": "mood_response",
+      "confidence": 0.733494222164154
+    }
+  },
+  {
+    "text": "negative",
+    "intent": "deny",
+    "intent_prediction": {
+      "name": "affirm",
+      "confidence": 0.8683794736862183
+    }
+  },
+  {
+    "text": "quite good",
+    "intent": "mood_response",
+    "intent_prediction": {
+      "name": "greet",
+      "confidence": 0.8717119693756104
+    }
+  },
+  {
+    "text": "maybe later, I’m not ready now",
+    "intent": "deny",
+    "intent_prediction": {
+      "name": "mood_response",
+      "confidence": 0.8105234503746033
+    }
+  },
+  {
+    "text": "let’s postpone it instead",
+    "intent": "deny",
+    "intent_prediction": {
+      "name": "affirm",
+      "confidence": 0.9999328851699829
+    }
+  },
+  {
+    "text": "exhausted today",
+    "intent": "mood_response",
+    "intent_prediction": {
+      "name": "greet",
+      "confidence": 0.5012080073356628
+    }
+  }
+]

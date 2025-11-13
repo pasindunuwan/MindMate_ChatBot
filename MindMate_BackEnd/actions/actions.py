@@ -10,25 +10,44 @@ import numpy as np
 from twilio.rest import Client
 import os
 from dotenv import load_dotenv
+import spotipy
+from spotipy.oauth2 import SpotifyClientCredentials
 
 # Load .env file
-load_dotenv(dotenv_path=r"C:\Users\User\Desktop\test_rasa3\.env")
+load_dotenv(dotenv_path=r"E:\MainProjectFile\MindMate ChatBot\MindMate_BackEnd\.env")
 
 # Set up logging
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
-# Set OpenAI API key from environment variable
+# Set OpenAI API key
 openai.api_key = os.getenv('OPENAI_API_KEY')
 if not openai.api_key:
     logger.error("OPENAI_API_KEY not found in .env file")
     raise ValueError("OPENAI_API_KEY not found in .env file")
 
-# Twilio configuration from environment variables
+# Twilio configuration
 TWILIO_ACCOUNT_SID = os.getenv('TWILIO_ACCOUNT_SID')
 TWILIO_AUTH_TOKEN = os.getenv('TWILIO_AUTH_TOKEN')
 TWILIO_PHONE_NUMBER = os.getenv('TWILIO_PHONE_NUMBER')
 RESPONSIBLE_PERSON_PHONE = os.getenv('RESPONSIBLE_PERSON_PHONE')
+
+# Spotify configuration
+SPOTIFY_CLIENT_ID = os.getenv('SPOTIFY_CLIENT_ID')
+SPOTIFY_CLIENT_SECRET = os.getenv('SPOTIFY_CLIENT_SECRET')
+if not all([SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET]):
+    logger.error("Spotify credentials not found in .env file")
+    raise ValueError("Spotify credentials not found in .env file")
+
+# Initialize Spotify client
+try:
+    sp = spotipy.Spotify(auth_manager=SpotifyClientCredentials(
+        client_id=SPOTIFY_CLIENT_ID,
+        client_secret=SPOTIFY_CLIENT_SECRET
+    ))
+except Exception as e:
+    logger.error(f"Spotify initialization error: {e}")
+    raise ValueError(f"Failed to initialize Spotify client: {e}")
 
 # Full DASS-21 Questions
 DASS_21_QUESTIONS = [
@@ -110,6 +129,44 @@ def send_sms_notification(scores: List[Tuple[Text, float, Text]], user_id: Text)
         logger.info(f"SMS sent successfully: {message.sid}")
     except Exception as e:
         logger.error(f"Failed to send SMS: {e}")
+
+# Spotify playlist recommendations based on DASS-21 levels
+def get_spotify_playlist(scale: Text, level: Text) -> Dict[Text, Any]:
+    try:
+        # Define search queries based on scale and level
+        if scale == "Depression":
+            if level == "Mild":
+                query = "uplifting acoustic playlist"
+            elif level == "Moderate":
+                query = "motivational pop playlist"
+        elif scale == "Anxiety":
+            if level == "Mild":
+                query = "calm instrumental playlist"
+            elif level == "Moderate":
+                query = "relaxing lo-fi playlist"
+        elif scale == "Stress":
+            if level == "Mild":
+                query = "peaceful ambient playlist"
+            elif level == "Moderate":
+                query = "chill meditation playlist"
+        else:
+            return {"name": None, "url": None}
+
+        # Search Spotify for playlists
+        results = sp.search(q=query, type="playlist", limit=1)
+        playlists = results["playlists"]["items"]
+        if playlists:
+            playlist = playlists[0]
+            return {
+                "name": playlist["name"],
+                "url": playlist["external_urls"]["spotify"]
+            }
+        else:
+            logger.warning(f"No playlist found for query: {query}")
+            return {"name": None, "url": None}
+    except Exception as e:
+        logger.error(f"Spotify API error for {scale} ({level}): {e}")
+        return {"name": None, "url": None}
 
 class ActionAskDassQuestion(Action):
     def name(self) -> Text:
@@ -252,13 +309,14 @@ class ActionRetrieveAndGenerateTips(Action):
 
         # Initialize response and context
         response_text = "### Relaxation Tips for Remote Workers\nAs a remote worker, it’s essential to prioritize your mental well-being. Below are tailored messages for each of your DASS-21 results.\n"
+        music_recommendations = []
         rag_context = ""
 
         # Load SentenceTransformer and FAISS index
         try:
             model = SentenceTransformer('all-MiniLM-L6-v2')
-            index = faiss.read_index(r"C:\Users\User\Desktop\test_rasa3\pdf_knowledge_base_index.faiss")
-            with open(r"C:\Users\User\Desktop\test_rasa3\text_metadata.txt", 'r') as f:
+            index = faiss.read_index(r"E:\MainProjectFile\MindMate ChatBot\MindMate_BackEnd\pdf_knowledge_base_index.faiss")
+            with open(r"E:\MainProjectFile\MindMate ChatBot\MindMate_BackEnd\text_metadata.txt", 'r') as f:
                 doc_paths = f.read().splitlines()
             logger.debug(f"Loaded FAISS index and {len(doc_paths)} metadata entries")
         except Exception as e:
@@ -271,7 +329,7 @@ class ActionRetrieveAndGenerateTips(Action):
             )
             logger.debug(f"Response text before dispatch: {response_text}")
             dispatcher.utter_message(text=response_text)
-            return [SlotSet("rag_context", "Default relaxation tip: Try deep breathing exercises.")]
+            return [SlotSet("rag_context", "Default relaxation tip: Try deep breathing exercises."), SlotSet("music_recommendations", None)]
 
         # Process each scale
         for scale_name, score, level in scales:
@@ -283,6 +341,21 @@ class ActionRetrieveAndGenerateTips(Action):
                     f"Your {scale_name.lower()} level is Normal, indicating good mental health in this area. Keep up your positive habits!\n"
                 )
                 continue
+            elif level in ["Severe", "Extremely Severe"]:
+                logger.debug(f"Skipping music recommendations for {scale_name} due to {level} level")
+                response_text += (
+                    f"\n#### {scale_name} ({level}, Score: {score})\n"
+                    f"Your {scale_name.lower()} score indicates serious concerns. Please meet a doctor or mental health professional immediately, such as by calling the 988 Crisis Lifeline (US) or an Employee Assistance Program (EAP). "
+                    f"For now, try this basic technique: Inhale deeply for 4 seconds, hold for 4, exhale for 4. Repeat 5 times.\n"
+                )
+                continue
+
+            # Get Spotify playlist for Mild/Moderate levels
+            playlist = get_spotify_playlist(scale_name, level)
+            if playlist["name"] and playlist["url"]:
+                music_recommendations.append(f"{scale_name} ({level}): Try listening to '{playlist['name']}' on Spotify: {playlist['url']}")
+            else:
+                music_recommendations.append(f"{scale_name} ({level}): Couldn’t find a specific playlist. Try searching for calming music on Spotify.")
 
             # Form RAG query for non-Normal levels
             query = f"relaxation tips for {level.lower()} {scale_name.lower()} in remote workers"
@@ -292,23 +365,16 @@ class ActionRetrieveAndGenerateTips(Action):
             try:
                 query_embedding = model.encode([query])
                 D, I = index.search(np.array(query_embedding), k=2)
-                context = "\n".join([open(f"C:\\Users\\User\\Desktop\\test_rasa3\\text_knowledge_base\\{doc_paths[i]}", 'r', encoding='utf-8').read() for i in I[0] if i >= 0])
+                context = "\n".join([open(f"E:\\MainProjectFile\\MindMate ChatBot\\MindMate_BackEnd\\text_knowledge_base\\{doc_paths[i]}", 'r', encoding='utf-8').read() for i in I[0] if i >= 0])
                 rag_context += f"{scale_name}: {context}\n"
                 logger.debug(f"Retrieved context for {scale_name}: {context[:100]}...")
             except Exception as e:
                 logger.error(f"RAG retrieval error for {scale_name}: {e}")
                 context = f"Default relaxation tip for {scale_name}: Try deep breathing exercises."
-                if level in ["Severe", "Extremely Severe"]:
-                    response_text += (
-                        f"\n#### {scale_name} ({level}, Score: {score})\n"
-                        f"Your {scale_name.lower()} score indicates serious concerns. Please meet a doctor or mental health professional immediately, such as by calling the 988 Crisis Lifeline (US) or an Employee Assistance Program (EAP). "
-                        f"For now, try this basic technique: Inhale deeply for 4 seconds, hold for 4, exhale for 4. Repeat 5 times.\n"
-                    )
-                else:
-                    response_text += (
-                        f"\n#### {scale_name} ({level}, Score: {score})\n"
-                        f"I couldn’t retrieve specific tips for {scale_name.lower()}. Here’s a general suggestion: Inhale deeply for 4 seconds, hold for 4, exhale for 4. Repeat 5 times.\n"
-                    )
+                response_text += (
+                    f"\n#### {scale_name} ({level}, Score: {score})\n"
+                    f"I couldn’t retrieve specific tips for {scale_name.lower()}. Here’s a general suggestion: Inhale deeply for 4 seconds, hold for 4, exhale for 4. Repeat 5 times.\n"
+                )
                 continue
 
             # Generate response with OpenAI for non-Normal levels
@@ -329,17 +395,15 @@ class ActionRetrieveAndGenerateTips(Action):
                 logger.debug(f"Generated response for {scale_name}: {response}")
             except Exception as e:
                 logger.error(f"OpenAI API error for {scale_name}: {e}")
-                if level in ["Severe", "Extremely Severe"]:
-                    response_text += (
-                        f"\n#### {scale_name} ({level}, Score: {score})\n"
-                        f"Your {scale_name.lower()} score indicates serious concerns. Please meet a doctor or mental health professional immediately, such as by calling the 988 Crisis Lifeline (US) or an Employee Assistance Program (EAP). "
-                        f"For now, try this basic technique: Inhale deeply for 4s, hold for 4s, exhale for 4s. Repeat 5 times.\n"
-                    )
-                else:
-                    response_text += (
-                        f"\n#### {scale_name} ({level}, Score: {score})\n"
-                        f"I couldn’t generate specific tips for {scale_name.lower()}. Try: Inhale deeply for 4s, hold for 4s, exhale for 4s. Repeat 5 times.\n"
-                    )
+                response_text += (
+                    f"\n#### {scale_name} ({level}, Score: {score})\n"
+                    f"I couldn’t generate specific tips for {scale_name.lower()}. Try: Inhale deeply for 4s, hold for 4s, exhale for 4s. Repeat 5 times.\n"
+                )
+
+        # Add music recommendations to response
+        if music_recommendations:
+            response_text += "\n### Music Recommendations\nListening to music can help improve your mood. Here are some Spotify playlists tailored to your results:\n"
+            response_text += "\n".join(music_recommendations) + "\n"
 
         # Add disclaimer
         response_text += "\nI am not a therapist; please consult a professional for serious concerns."
@@ -349,6 +413,7 @@ class ActionRetrieveAndGenerateTips(Action):
         dispatcher.utter_message(text=response_text)
         return [
             SlotSet("rag_context", rag_context),
+            SlotSet("music_recommendations", "\n".join(music_recommendations) if music_recommendations else None),
             SlotSet("temp_depression_score", None),
             SlotSet("temp_anxiety_score", None),
             SlotSet("temp_stress_score", None)
@@ -370,15 +435,15 @@ class ActionAnswerGeneralQuestion(Action):
             # Use RAG for mental health questions
             try:
                 model = SentenceTransformer('all-MiniLM-L6-v2')
-                index = faiss.read_index(r"C:\Users\User\Desktop\test_rasa3\pdf_knowledge_base_index.faiss")
-                with open(r"C:\Users\User\Desktop\test_rasa3\text_metadata.txt", 'r') as f:
+                index = faiss.read_index(r"E:\MainProjectFile\MindMate ChatBot\MindMate_BackEnd\pdf_knowledge_base_index.faiss")
+                with open(r"E:\MainProjectFile\MindMate ChatBot\MindMate_BackEnd\text_metadata.txt", 'r') as f:
                     doc_paths = f.read().splitlines()
                 logger.debug(f"Loaded FAISS index and {len(doc_paths)} metadata entries for general question")
 
                 # Retrieve relevant chunks
                 query_embedding = model.encode([user_question])
                 D, I = index.search(np.array(query_embedding), k=2)
-                context = "\n".join([open(f"C:\\Users\\User\\Desktop\\test_rasa3\\text_knowledge_base\\{doc_paths[i]}", 'r', encoding='utf-8').read() for i in I[0] if i >= 0])
+                context = "\n".join([open(f"E:\\MainProjectFile\\MindMate ChatBot\\MindMate_BackEnd\\text_knowledge_base\\{doc_paths[i]}", 'r', encoding='utf-8').read() for i in I[0] if i >= 0])
                 logger.debug(f"Retrieved context for question: {context[:100]}...")
 
                 # Generate response with OpenAI

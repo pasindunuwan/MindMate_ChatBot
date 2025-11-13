@@ -54,7 +54,9 @@ pipeline:
   - name: LexicalSyntacticFeaturizer
   - name: CountVectorsFeaturizer
   - name: DIETClassifier
-    epochs: 100
+    epochs: 200
+    dropout: 0.7 # A little forgetfulness to learn better
+    weight_reg_factor: 0.03 # Keep it from clinging too hard
   - name: EntitySynonymMapper
   - name: ResponseSelector
     epochs: 100

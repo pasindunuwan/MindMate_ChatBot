@@ -1,0 +1,21 @@
+version: '3.1'
+stories:
+- story: User denies DASS-21
+  steps:
+  - intent: deny
+  - action: utter_deny_dass
+- story: User agrees to DASS-21
+  steps:
+  - intent: affirm
+  - action: utter_start_dass
+  - action: action_ask_dass_question
+- story: Greet and offer DASS-21
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: mood_response
+  - action: utter_ask_dass
+- story: Show DASS-21 results and provide tips
+  steps:
+  - action: action_show_dass_results
+  - action: action_retrieve_and_generate_tips

@@ -1,0 +1,11 @@
+stories:
+- story: Request DASS-21 directly
+  steps:
+  - intent: request_dass
+  - action: utter_start_dass
+  - action: action_ask_dass_question
+- story: Handle DASS-21 responses
+  steps:
+  - intent: dass_response
+  - action: action_process_dass_response
+  - action: action_ask_dass_question
